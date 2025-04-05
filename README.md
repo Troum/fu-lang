@@ -52,7 +52,7 @@ php bin/run.php Иван
 Выход:
 
 ```
-Привет, Иван
+{"message":"Hello, world"}
 ```
 
 ---
