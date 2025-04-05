@@ -1,0 +1,27 @@
+{
+  "name": "for-i2crm/fu-lang",
+  "description": "Мини-фреймворк для интерпретации функционального языка",
+  "type": "library",
+  "autoload": {
+    "psr-4": {
+      "FuLang\\": "src/"
+    }
+  },
+  "bin": [
+    "bin/repl.php",
+    "bin/run.php"
+  ],
+  "require": {
+    "php": ">=8.0",
+    "ext-ctype": "*",
+    "ext-mbstring": "*",
+    "ext-json": "*"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Ruslan Belchenkov",
+      "email": "ruslan.belchenkov@yandex.ru"
+    }
+  ]
+}
