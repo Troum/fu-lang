@@ -122,8 +122,8 @@ $interpreter->addFunction('strlen', fn($s) => strlen($s));
 ## Пример использования в коде
 
 ```php
-use FunctionalLang\Core\Parser;
-use FunctionalLang\Core\Interpreter;
+use FuLang\Core\Parser;
+use FuLang\Core\Interpreter;
 
 $parser = new Parser('(upper, (concat, "Привет, ", (getArg, 0)))');
 $ast = $parser->parse();
