@@ -7,4 +7,8 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
+    'FuLang\\Core\\Interpreter' => $baseDir . '/src/Core/Interpreter.php',
+    'FuLang\\Core\\Parser' => $baseDir . '/src/Core/Parser.php',
+    'FuLang\\Exception\\EvalException' => $baseDir . '/src/Exception/EvalException.php',
+    'FuLang\\Exception\\ParseException' => $baseDir . '/src/Exception/ParseException.php',
 );
