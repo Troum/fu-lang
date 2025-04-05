@@ -22,7 +22,7 @@ class Interpreter {
      */
     public function addDefaultFunctions(): void {
         $this->addFunction('array', fn(...$items) => $items);
-        $this->addFunction('map', fn($k, $v) => is_array($k) && is_array($v) ? array_combine($k, $v) : throw new EvalException("Функция map() ожидает два массива"));
+        $this->addFunction('map', fn($k, $v) => is_array($k) && is_array($v) ? array_combine($k, $v) : throw new EvalException("Функция map() ожидает два массива" . PHP_EOL));
         $this->addFunction('concat', fn($a, $b) => (string)$a . (string)$b);
         $this->addFunction('json', fn($v) => json_encode($v, JSON_UNESCAPED_UNICODE));
         $this->addFunction('upper', fn($v) => mb_strtoupper((string)$v));
@@ -36,7 +36,7 @@ class Interpreter {
     public function bindArguments(array $args): void {
         $this->args = $args;
         $this->addFunction('getArg', fn($i) =>
-            $args[$i] ?? throw new EvalException("Аргумент с индексом $i не установлен")
+            $args[$i] ?? throw new EvalException("Аргумент с индексом $i не установлен" . PHP_EOL)
         );
     }
 
@@ -58,12 +58,12 @@ class Interpreter {
         if (is_array($expr) && $expr[0] === 'call') {
             [$_, $name, $args] = $expr;
             if (!isset($this->functions[$name])) {
-                throw new EvalException("Функция '$name' не определена");
+                throw new EvalException("Функция '$name' не определена" . PHP_EOL);
             }
             $evaluated = array_map(fn($e) => $this->evalExpr($e), $args);
             return ($this->functions[$name])(...$evaluated);
         }
 
-        throw new EvalException("Некорректное выражение для вычисления");
+        throw new EvalException("Некорректное выражение для вычисления" . PHP_EOL);
     }
 }

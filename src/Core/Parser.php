@@ -11,15 +11,21 @@ class Parser {
         $this->input = trim($input);
     }
 
+    /**
+     * @throws ParseException
+     */
     public function parse(): mixed {
         $result = $this->parseExpression();
         $this->skipWhitespace();
         if ($this->pos < strlen($this->input)) {
-            throw new ParseException("Ошибка синтаксиса: неожиданные данные после конца выражения");
+            throw new ParseException("Ошибка синтаксиса: неожиданные данные после конца выражения" . PHP_EOL);
         }
         return $result;
     }
 
+    /**
+     * @throws ParseException
+     */
     private function parseExpression(): mixed {
         $this->skipWhitespace();
         $char = $this->peek();
@@ -31,6 +37,9 @@ class Parser {
         };
     }
 
+    /**
+     * @throws ParseException
+     */
     private function parseFunctionCall(): array {
         $this->consume('(');
         $this->skipWhitespace();
@@ -55,14 +64,20 @@ class Parser {
         return ['call', $name, $args];
     }
 
+    /**
+     * @throws ParseException
+     */
     private function parseIdentifier(): string {
         if (!preg_match('/[a-zA-Z_][a-zA-Z0-9_]*/A', $this->input, $matches, 0, $this->pos)) {
-            throw new ParseException("Ожидалось имя функции или идентификатор (позиция: $this->pos)");
+            throw new ParseException("Ожидалось имя функции или идентификатор (позиция: $this->pos)" . PHP_EOL);
         }
         $this->pos += strlen($matches[0]);
         return $matches[0];
     }
 
+    /**
+     * @throws ParseException
+     */
     private function parseConstant(): mixed {
         foreach (['true', 'false', 'null'] as $const) {
             if (str_starts_with(substr($this->input, $this->pos), $const)) {
@@ -74,15 +89,18 @@ class Parser {
                 };
             }
         }
-        throw new ParseException("Неизвестная константа или символ на позиции $this->pos");
+        throw new ParseException("Неизвестная константа или символ на позиции $this->pos" . PHP_EOL);
     }
 
+    /**
+     * @throws ParseException
+     */
     private function parseString(): string {
         $this->consume('"');
         $result = '';
         while ($this->peek() !== '"') {
             if ($this->peek() === null) {
-                throw new ParseException("Ошибка строки: отсутствует закрывающая кавычка");
+                throw new ParseException("Ошибка строки: отсутствует закрывающая кавычка" . PHP_EOL);
             }
             $result .= $this->consume();
         }
@@ -90,9 +108,12 @@ class Parser {
         return $result;
     }
 
+    /**
+     * @throws ParseException
+     */
     private function parseNumber(): int|float {
         if (!preg_match('/-?\d+(\.\d+)?/A', $this->input, $matches, 0, $this->pos)) {
-            throw new ParseException("Ошибка числа на позиции $this->pos");
+            throw new ParseException("Ошибка числа на позиции $this->pos" . PHP_EOL);
         }
         $this->pos += strlen($matches[0]);
         return str_contains($matches[0], '.') ? floatval($matches[0]) : intval($matches[0]);
@@ -102,13 +123,16 @@ class Parser {
         return $this->pos < strlen($this->input) ? $this->input[$this->pos] : null;
     }
 
+    /**
+     * @throws ParseException
+     */
     private function consume(?string $char = null): string {
         if ($this->pos >= strlen($this->input)) {
-            throw new ParseException("Неожиданный конец ввода");
+            throw new ParseException("Неожиданный конец ввода" . PHP_EOL);
         }
         $current = $this->input[$this->pos];
         if ($char !== null && $current !== $char) {
-            throw new ParseException("Ожидался символ '$char', но получен '$current' (позиция: $this->pos)");
+            throw new ParseException("Ожидался символ '$char', но получен '$current' (позиция: $this->pos)" . PHP_EOL);
         }
         $this->pos++;
         return $current;
